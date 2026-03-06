@@ -19,15 +19,13 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
   return (
     <div
       ref={cardRef}
-      className="
-        relative w-full rounded-[3.5rem] overflow-hidden
-        shadow-[0_20px_50px_rgba(0,0,0,0.2)]
-        group bg-dark/20
-      "
-      style={{
-        height: 'clamp(560px, 100vh, 820px)',
-        maxHeight: 'calc(100vh - 80px)',
-      }}
+      className={[
+        'team-landscape-card',
+        isExpanded ? 'team-landscape-card--expanded' : 'team-landscape-card--collapsed',
+        'relative w-full rounded-[3.5rem] overflow-hidden',
+        'shadow-[0_20px_50px_rgba(0,0,0,0.2)]',
+        'group bg-dark/20',
+      ].join(' ')}
     >
       {/* Parallax Background */}
       <motion.div style={{ y: bgY }} className="absolute inset-0 z-0 h-[130%] -top-[15%]">
@@ -40,7 +38,7 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
       </motion.div>
 
       {/* Center layer */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center p-6 md:p-8 pointer-events-none">
+      <div className="absolute inset-0 z-10 flex items-center justify-center p-5 sm:p-6 md:p-8 pointer-events-none">
         <AnimatePresence mode="wait">
           {!isExpanded ? (
             <motion.div
@@ -71,9 +69,9 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
                 }}
               />
 
-              <div className="text-white text-left">
+              <div className="text-white text-left min-w-0">
                 <h4
-                  className="font-bold leading-tight tracking-tight"
+                  className="font-bold leading-tight tracking-tight truncate"
                   style={{ fontSize: 'clamp(12px, 1.05vw, 16px)' }}
                 >
                   {name}
@@ -115,6 +113,7 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
               exit={{ opacity: 0, scale: 0.96, y: 10 }}
               transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
               className="
+                team-expanded-card
                 pointer-events-auto relative
                 bg-white/14 backdrop-blur-[36px]
                 border border-white/30
@@ -129,13 +128,13 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
                 padding: 'clamp(16px, 1.8vw, 26px)',
               }}
             >
-              {/* ✅ Agent Profile button (palette + glass) */}
               {isFlorencia && (
                 <a
                   href="https://www.cbmmre.com/agents/florencia-padilla"
                   target="_blank"
                   rel="noreferrer"
                   className="
+                    team-agent-profile-btn
                     absolute top-4 left-4
                     inline-flex items-center gap-2
                     rounded-full
@@ -147,21 +146,19 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
                     hover:scale-[1.02] active:scale-[0.98]
                   "
                   style={{
-                    // palette-driven glass: primary tint + accent border
-                    background: 'rgba(0, 91, 67, 0.28)', // #005B43 (primary) with alpha
-                    borderColor: 'rgba(0, 209, 178, 0.28)', // #00D1B2 (accent) with alpha
+                    background: 'rgba(0, 91, 67, 0.28)',
+                    borderColor: 'rgba(0, 209, 178, 0.28)',
                     padding: 'clamp(8px, 0.9vw, 10px) clamp(12px, 1.1vw, 14px)',
                     fontSize: 'clamp(10px, 0.75vw, 11px)',
                     letterSpacing: '0.10em',
                   }}
                   aria-label="Open Florencia Padilla agent profile"
                 >
-                  <ExternalLink style={{ width: 14, height: 14 }} />
-                  Agent Profile
+                  <ExternalLink className="team-agent-profile-icon" style={{ width: 14, height: 14 }} />
+                  <span>Agent Profile</span>
                 </a>
               )}
 
-              {/* Close */}
               <button
                 onClick={() => setIsExpanded(false)}
                 className="
@@ -179,7 +176,6 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
                 <X style={{ width: 20, height: 20 }} />
               </button>
 
-              {/* Avatar */}
               <motion.img
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -195,7 +191,6 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
                 }}
               />
 
-              {/* Content */}
               <motion.div
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -224,9 +219,8 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
                   {role}
                 </p>
 
-                {/* ✅ Bio with aesthetic scrollbar */}
                 <div
-                  className="vis-bio-scroll text-white/90 italic drop-shadow-sm"
+                  className="team-expanded-bio vis-bio-scroll text-white/90 italic drop-shadow-sm"
                   style={{
                     fontSize: 'clamp(12.2px, 0.92vw, 14.2px)',
                     lineHeight: 1.6,
@@ -250,10 +244,14 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
 const TeamSection: React.FC = () => {
   return (
     <section id="about" className="py-20 md:py-24 px-6 max-w-7xl mx-auto">
-      {/* ✅ Scoped scrollbar styling (only affects .vis-bio-scroll) */}
       <style>{`
+        .team-landscape-card {
+          height: clamp(560px, 100vh, 820px);
+          max-height: calc(100vh - 80px);
+        }
+
         .vis-bio-scroll {
-          scrollbar-width: thin;                 /* Firefox */
+          scrollbar-width: thin;
           scrollbar-color: rgba(0, 209, 178, 0.42) rgba(255, 255, 255, 0.12);
         }
         .vis-bio-scroll::-webkit-scrollbar {
@@ -281,9 +279,69 @@ const TeamSection: React.FC = () => {
             rgba(0, 148, 112, 0.75)
           );
         }
+
+        @media (max-width: 767px) {
+          .team-landscape-card.team-landscape-card--collapsed {
+            height: clamp(430px, 72svh, 620px);
+            min-height: 430px;
+            max-height: min(620px, calc(100svh - 32px));
+          }
+
+          .team-landscape-card.team-landscape-card--expanded {
+            height: auto;
+            min-height: clamp(620px, 88svh, 860px);
+            max-height: none;
+            aspect-ratio: auto;
+          }
+
+          .team-expanded-card {
+            width: min(92vw, 420px) !important;
+            max-height: none !important;
+            padding: 18px 18px 20px !important;
+            border-radius: 2.2rem !important;
+          }
+
+          .team-expanded-bio {
+            max-height: none !important;
+            overflow: visible !important;
+            padding-right: 0 !important;
+            font-size: clamp(12px, 3.25vw, 14px) !important;
+            line-height: 1.68 !important;
+          }
+
+          .team-agent-profile-btn {
+            gap: 0.45rem !important;
+            padding: 8px 11px !important;
+            font-size: clamp(9px, 2.6vw, 10px) !important;
+            max-width: calc(100% - 78px);
+            white-space: nowrap;
+          }
+
+          .team-agent-profile-icon {
+            width: 12px !important;
+            height: 12px !important;
+            flex-shrink: 0;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .team-landscape-card.team-landscape-card--collapsed {
+            height: clamp(420px, 70svh, 560px);
+            min-height: 420px;
+          }
+
+          .team-landscape-card.team-landscape-card--expanded {
+            min-height: 690px;
+          }
+
+          .team-expanded-card {
+            width: min(90.5vw, 390px) !important;
+            padding: 16px 16px 18px !important;
+            border-radius: 2rem !important;
+          }
+        }
       `}</style>
 
-      {/* Title Section */}
       <div className="mb-14 md:mb-16 relative h-24 md:h-28">
         <motion.h2
           initial={{ opacity: 0 }}
@@ -307,7 +365,6 @@ const TeamSection: React.FC = () => {
         </motion.h2>
       </div>
 
-      {/* Cards */}
       <div className="grid md:grid-cols-2 gap-10 md:gap-14 items-start">
         <TeamCard
           name="Geremías Guntern"
