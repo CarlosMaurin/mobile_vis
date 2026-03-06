@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>V.I.S. | Property & Hospitality Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            screens: {
+              'laptop': '1366px',
+              'desktop': '1440px',
+              'wide': '1536px',
+              'fhd': '1920px',
+            },
+            colors: {
+              primary: '#316765',
+              accent: '#7CA87A',
+              dark: '#2E2D3A',
+              cream: '#F5F9FA'
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+              lemonmilk: ['LemonMilk', 'Montserrat', 'sans-serif'],
+              body: ['Montserrat', 'sans-serif']
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      @font-face {
+          font-family: 'LemonMilk';
+          src: url('https://db.onlinewebfonts.com/t/209127d1a58c06788b140993081e7498.woff2') format('woff2');
+          font-weight: normal;
+          font-style: normal;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      textarea::-webkit-scrollbar {
+          width: 8px;
+      }
+      textarea::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.1);
+      }
+      textarea::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
