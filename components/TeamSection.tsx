@@ -155,7 +155,7 @@ const TeamCard: React.FC<TeamMemberProps> = ({ name, role, image, bgImage, bio }
                   aria-label="Open Florencia Padilla agent profile"
                 >
                   <ExternalLink className="team-agent-profile-icon" style={{ width: 14, height: 14 }} />
-                  <span>Agent Profile</span>
+                  <span className="team-agent-profile-label">Agent Profile</span>
                 </a>
               )}
 
@@ -281,22 +281,16 @@ const TeamSection: React.FC = () => {
         }
 
         @media (max-width: 767px) {
-          .team-landscape-card.team-landscape-card--collapsed {
-            height: clamp(430px, 72svh, 620px);
-            min-height: 430px;
-            max-height: min(620px, calc(100svh - 32px));
-          }
-
+          .team-landscape-card.team-landscape-card--collapsed,
           .team-landscape-card.team-landscape-card--expanded {
-            height: auto;
-            min-height: clamp(620px, 88svh, 860px);
-            max-height: none;
-            aspect-ratio: auto;
+            height: min(78svh, 720px);
+            min-height: 620px;
+            max-height: calc(100svh - 28px);
           }
 
           .team-expanded-card {
             width: min(92vw, 420px) !important;
-            max-height: none !important;
+            max-height: min(82svh, calc(100% - 28px)) !important;
             padding: 18px 18px 20px !important;
             border-radius: 2.2rem !important;
           }
@@ -310,34 +304,51 @@ const TeamSection: React.FC = () => {
           }
 
           .team-agent-profile-btn {
-            gap: 0.45rem !important;
-            padding: 8px 11px !important;
-            font-size: clamp(9px, 2.6vw, 10px) !important;
-            max-width: calc(100% - 78px);
-            white-space: nowrap;
+            gap: 0.3rem !important;
+            padding: 7px 9px !important;
+            font-size: 9px !important;
+            line-height: 1.05 !important;
+            max-width: calc(100% - 82px);
+            min-height: 34px;
+            align-items: center !important;
           }
 
           .team-agent-profile-icon {
-            width: 12px !important;
-            height: 12px !important;
+            width: 11px !important;
+            height: 11px !important;
             flex-shrink: 0;
+          }
+
+          .team-agent-profile-label {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            white-space: normal !important;
           }
         }
 
         @media (max-width: 420px) {
-          .team-landscape-card.team-landscape-card--collapsed {
-            height: clamp(420px, 70svh, 560px);
-            min-height: 420px;
-          }
-
+          .team-landscape-card.team-landscape-card--collapsed,
           .team-landscape-card.team-landscape-card--expanded {
-            min-height: 690px;
+            height: min(76svh, 680px);
+            min-height: 600px;
+            max-height: calc(100svh - 24px);
           }
 
           .team-expanded-card {
             width: min(90.5vw, 390px) !important;
+            max-height: min(82svh, calc(100% - 24px)) !important;
             padding: 16px 16px 18px !important;
             border-radius: 2rem !important;
+          }
+
+          .team-agent-profile-btn {
+            top: 12px !important;
+            left: 12px !important;
+            padding: 6px 8px !important;
+            border-radius: 16px !important;
+            max-width: 96px !important;
           }
         }
       `}</style>
