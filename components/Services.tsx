@@ -256,15 +256,7 @@ const Services: React.FC = () => {
       {
         id: 1,
         title: 'Property Management & Maintenance',
-        content: [
-          'Residential Property Management (Second Home Owners)',
-          'Short-Term Rental Property Management (inspecciones pre y post estadía)',
-          'Custodial Services / Property Maintenance para edificios comerciales',
-          'Asistencia a Property Managers, Boards y HOAs',
-          'Weekly Property Inspections & Reports',
-          'Preventive Maintenance & Handyman Services',
-          'Vendor Management (plumbing, electrical, painting, snow removal, landscaping, etc.)',
-        ],
+        content: [],
       },
       {
         id: 2,
@@ -493,7 +485,159 @@ const Services: React.FC = () => {
                       {serviceData.find((s) => s.id === selectedService)?.title}
                     </h2>
 
-                    {selectedService === 2 ? (
+                    {selectedService === 1 ? (
+                      <div className="space-y-4">
+                        <motion.div
+                          initial={{ opacity: 0, x: -8 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{
+                            delay: 0.06,
+                            duration: 0.22,
+                            ease: 'easeOut',
+                          }}
+                          className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
+                          style={{ padding: 'clamp(14px, 1.35vw, 18px)' }}
+                        >
+                          <h3
+                            className="text-primary mb-3"
+                            style={{
+                              fontSize: 'clamp(0.98rem, 1.02vw, 1.08rem)',
+                              fontWeight: 700,
+                              lineHeight: 1.3,
+                            }}
+                          >
+                            Residential Property management
+                          </h3>
+
+                          <div className="space-y-3">
+                            <div>
+                              <p
+                                className="text-dark"
+                                style={{
+                                  fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
+                                  fontWeight: 700,
+                                  lineHeight: 1.45,
+                                  marginBottom: '6px',
+                                }}
+                              >
+                                A- second home owners
+                              </p>
+
+                              <ul
+                                className="text-dark/70 list-disc"
+                                style={{
+                                  paddingLeft: '1.1rem',
+                                  fontSize: 'clamp(0.8rem, 0.88vw, 0.875rem)',
+                                  lineHeight: 1.45,
+                                }}
+                              >
+                                <li>weekly property inspection and reports</li>
+                                <li>preventive maintenance and handyman services</li>
+                                <li>
+                                  vendor management (plumbing, electrical, painting, snow removal,
+                                  landscaping, etc)
+                                </li>
+                              </ul>
+                            </div>
+
+                            <div>
+                              <p
+                                className="text-dark"
+                                style={{
+                                  fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
+                                  fontWeight: 700,
+                                  lineHeight: 1.45,
+                                  marginBottom: '6px',
+                                }}
+                              >
+                                B- short term rental property management
+                              </p>
+
+                              <ul
+                                className="text-dark/70 list-disc"
+                                style={{
+                                  paddingLeft: '1.1rem',
+                                  fontSize: 'clamp(0.8rem, 0.88vw, 0.875rem)',
+                                  lineHeight: 1.45,
+                                }}
+                              >
+                                <li>inspections pre and post arrivals</li>
+                                <li>check out cleanings</li>
+                                <li>preventive maintenance and handyman services</li>
+                                <li>24/7 guest assistance</li>
+                                <li>vendor management</li>
+                                <li>guest amenities and welcome baskets and more</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </motion.div>
+
+                        <motion.div
+                          initial={{ opacity: 0, x: -8 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{
+                            delay: 0.12,
+                            duration: 0.22,
+                            ease: 'easeOut',
+                          }}
+                          className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
+                          style={{ padding: 'clamp(14px, 1.35vw, 18px)' }}
+                        >
+                          <h3
+                            className="text-primary mb-3"
+                            style={{
+                              fontSize: 'clamp(0.98rem, 1.02vw, 1.08rem)',
+                              fontWeight: 700,
+                              lineHeight: 1.3,
+                            }}
+                          >
+                            Commercial Property management assistance
+                          </h3>
+
+                          <div className="space-y-3">
+                            <div>
+                              <p
+                                className="text-dark"
+                                style={{
+                                  fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
+                                  fontWeight: 700,
+                                  lineHeight: 1.45,
+                                  marginBottom: '6px',
+                                }}
+                              >
+                                A- Custodial services and property maintenance for commercial
+                                buildings
+                              </p>
+
+                              <ul
+                                className="text-dark/70 list-disc"
+                                style={{
+                                  paddingLeft: '1.1rem',
+                                  fontSize: 'clamp(0.8rem, 0.88vw, 0.875rem)',
+                                  lineHeight: 1.45,
+                                }}
+                              >
+                                <li>weekly property inspection & reports</li>
+                                <li>preventive maintenance and handyman services</li>
+                              </ul>
+                            </div>
+
+                            <div>
+                              <p
+                                className="text-dark"
+                                style={{
+                                  fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
+                                  fontWeight: 700,
+                                  lineHeight: 1.45,
+                                }}
+                              >
+                                B- Hoa, boards and commercial Property managers assistance
+                              </p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </div>
+                    ) : selectedService === 2 ? (
                       <div className="space-y-4">
                         <div className="space-y-4">
                           {[
