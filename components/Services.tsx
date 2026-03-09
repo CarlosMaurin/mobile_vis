@@ -292,28 +292,28 @@ const Services: React.FC = () => {
       <style>{`
         .elegant-scroll {
           scrollbar-width: thin;
-          scrollbar-color: rgba(49, 103, 101, 0.65) rgba(49, 103, 101, 0.08);
+          scrollbar-color: rgba(49, 103, 101, 0.58) transparent;
           scroll-behavior: smooth;
         }
 
         .elegant-scroll::-webkit-scrollbar {
-          width: 10px;
+          width: 8px;
         }
 
         .elegant-scroll::-webkit-scrollbar-track {
-          background: rgba(49, 103, 101, 0.08);
+          background: transparent;
           border-radius: 999px;
-          margin: 18px 0;
+          margin: 10px 0;
         }
 
         .elegant-scroll::-webkit-scrollbar-thumb {
           background: linear-gradient(
             180deg,
-            rgba(124, 168, 122, 0.95) 0%,
-            rgba(49, 103, 101, 0.95) 100%
+            rgba(124, 168, 122, 0.92) 0%,
+            rgba(49, 103, 101, 0.92) 100%
           );
           border-radius: 999px;
-          border: 2px solid rgba(255, 255, 255, 0.9);
+          border: 1.5px solid rgba(255, 255, 255, 0.95);
         }
 
         .elegant-scroll::-webkit-scrollbar-thumb:hover {
@@ -322,6 +322,52 @@ const Services: React.FC = () => {
             rgba(124, 168, 122, 1) 0%,
             rgba(49, 103, 101, 1) 100%
           );
+        }
+
+        .scroll-fade-wrap {
+          position: relative;
+          height: 100%;
+          overflow: hidden;
+          border-radius: inherit;
+        }
+
+        .scroll-fade-wrap::before,
+        .scroll-fade-wrap::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 14px;
+          height: 28px;
+          pointer-events: none;
+          z-index: 3;
+        }
+
+        .scroll-fade-wrap::before {
+          top: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.98) 0%,
+            rgba(255, 255, 255, 0.82) 45%,
+            rgba(255, 255, 255, 0) 100%
+          );
+        }
+
+        .scroll-fade-wrap::after {
+          bottom: 0;
+          background: linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 0.98) 0%,
+            rgba(255, 255, 255, 0.82) 45%,
+            rgba(255, 255, 255, 0) 100%
+          );
+        }
+
+        .modal-scroll-area {
+          height: 100%;
+          overflow-y: auto;
+          overflow-x: hidden;
+          padding-right: 10px;
+          margin-right: 4px;
         }
       `}</style>
 
@@ -491,295 +537,323 @@ const Services: React.FC = () => {
             >
               <div onClick={(e) => e.stopPropagation()} className="w-full flex justify-center">
                 <div
-                  className="elegant-scroll w-full rounded-[2.25rem] shadow-2xl overflow-hidden bg-white"
+                  className="w-full rounded-[2.25rem] shadow-2xl overflow-hidden bg-white"
                   style={{
                     maxWidth: 'min(720px, 92vw)',
-                    maxHeight: `calc(100vh - ${navOffsetPx}px - 10px)`,
-                    overflowY: 'auto',
+                    height: `calc(100vh - ${navOffsetPx}px - 10px)`,
                   }}
                 >
-                  <div className="relative" style={{ padding: 'clamp(16px, 1.8vw, 30px)' }}>
+                  <div
+                    className="relative h-full"
+                    style={{ padding: 'clamp(16px, 1.8vw, 30px)' }}
+                  >
                     <button
                       onClick={closeModal}
-                      className="absolute top-5 right-5 p-2 rounded-full bg-cream hover:bg-dark hover:text-white transition-all duration-300"
+                      className="absolute top-5 right-5 z-[5] p-2 rounded-full bg-cream hover:bg-dark hover:text-white transition-all duration-300"
                     >
                       <X className="w-5 h-5" />
                     </button>
 
-                    <div className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-[10px] text-accent font-black uppercase tracking-[0.2em] mb-4">
-                      Service Details
-                    </div>
-
-                    <h2
-                      className="text-primary mb-8 leading-tight"
+                    <div
+                      className="h-full flex flex-col"
                       style={{
-                        fontSize: 'clamp(1.6rem, 2.1vw, 2.4rem)',
-                        fontWeight: 700,
-                        letterSpacing: '-0.02em',
+                        paddingTop: '6px',
                       }}
                     >
-                      {serviceData.find((s) => s.id === selectedService)?.title}
-                    </h2>
-
-                    {selectedService === 1 ? (
-                      <div className="space-y-4">
-                        <motion.div
-                          initial={{ opacity: 0, x: -8 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.06, duration: 0.22, ease: 'easeOut' }}
-                          className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
-                          style={{ padding: 'clamp(14px, 1.35vw, 18px)' }}
-                        >
-                          <h3
-                            className="text-primary mb-3"
-                            style={{
-                              fontSize: 'clamp(0.98rem, 1.02vw, 1.08rem)',
-                              fontWeight: 700,
-                              lineHeight: 1.3,
-                            }}
-                          >
-                            Residential Property management
-                          </h3>
-
-                          <div className="space-y-3">
-                            <div>
-                              <p
-                                className="text-dark"
-                                style={{
-                                  fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
-                                  fontWeight: 700,
-                                  lineHeight: 1.45,
-                                  marginBottom: '6px',
-                                }}
-                              >
-                                A- second home owners
-                              </p>
-
-                              <ul
-                                className="text-dark/70 list-disc"
-                                style={{
-                                  paddingLeft: '1.1rem',
-                                  fontSize: 'clamp(0.8rem, 0.88vw, 0.875rem)',
-                                  lineHeight: 1.45,
-                                }}
-                              >
-                                <li>weekly property inspection and reports</li>
-                                <li>preventive maintenance and handyman services</li>
-                                <li>
-                                  vendor management (plumbing, electrical, painting, snow removal,
-                                  landscaping, etc)
-                                </li>
-                              </ul>
-                            </div>
-
-                            <div>
-                              <p
-                                className="text-dark"
-                                style={{
-                                  fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
-                                  fontWeight: 700,
-                                  lineHeight: 1.45,
-                                  marginBottom: '6px',
-                                }}
-                              >
-                                B- short term rental property management
-                              </p>
-
-                              <ul
-                                className="text-dark/70 list-disc"
-                                style={{
-                                  paddingLeft: '1.1rem',
-                                  fontSize: 'clamp(0.8rem, 0.88vw, 0.875rem)',
-                                  lineHeight: 1.45,
-                                }}
-                              >
-                                <li>inspections pre and post arrivals</li>
-                                <li>check out cleanings</li>
-                                <li>preventive maintenance and handyman services</li>
-                                <li>24/7 guest assistance</li>
-                                <li>vendor management</li>
-                                <li>guest amenities and welcome baskets and more</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </motion.div>
-
-                        <motion.div
-                          initial={{ opacity: 0, x: -8 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.12, duration: 0.22, ease: 'easeOut' }}
-                          className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
-                          style={{ padding: 'clamp(14px, 1.35vw, 18px)' }}
-                        >
-                          <h3
-                            className="text-primary mb-3"
-                            style={{
-                              fontSize: 'clamp(0.98rem, 1.02vw, 1.08rem)',
-                              fontWeight: 700,
-                              lineHeight: 1.3,
-                            }}
-                          >
-                            Commercial Property management assistance
-                          </h3>
-
-                          <div className="space-y-3">
-                            <div>
-                              <p
-                                className="text-dark"
-                                style={{
-                                  fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
-                                  fontWeight: 700,
-                                  lineHeight: 1.45,
-                                  marginBottom: '6px',
-                                }}
-                              >
-                                A- Custodial services and property maintenance for commercial
-                                buildings
-                              </p>
-
-                              <ul
-                                className="text-dark/70 list-disc"
-                                style={{
-                                  paddingLeft: '1.1rem',
-                                  fontSize: 'clamp(0.8rem, 0.88vw, 0.875rem)',
-                                  lineHeight: 1.45,
-                                }}
-                              >
-                                <li>weekly property inspection & reports</li>
-                                <li>preventive maintenance and handyman services</li>
-                              </ul>
-                            </div>
-
-                            <div>
-                              <p
-                                className="text-dark"
-                                style={{
-                                  fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
-                                  fontWeight: 700,
-                                  lineHeight: 1.45,
-                                }}
-                              >
-                                B- Hoa, boards and commercial Property managers assistance
-                              </p>
-                            </div>
-                          </div>
-                        </motion.div>
-                      </div>
-                    ) : selectedService === 2 ? (
-                      <div className="space-y-4">
-                        <div className="space-y-4">
-                          {[
-                            'Residential Cleaning (Checkout Clean, Move-Out Clean, Deep Clean)',
-                            'Commercial Cleaning (Restaurants, Offices, Common Areas)',
-                          ].map((item, idx) => (
-                            <motion.div
-                              key={idx}
-                              initial={{ opacity: 0, x: -8 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.06 + idx * 0.04, duration: 0.22, ease: 'easeOut' }}
-                              className="flex items-start gap-4"
-                            >
-                              <div className="mt-1 flex-shrink-0">
-                                <CheckCircle2 className="w-5 h-5 text-accent" />
-                              </div>
-                              <p
-                                className="text-dark/70 font-medium"
-                                style={{
-                                  fontSize: 'clamp(0.83rem, 0.95vw, 0.92rem)',
-                                  lineHeight: 1.6,
-                                }}
-                              >
-                                {item}
-                              </p>
-                            </motion.div>
-                          ))}
+                      <div className="flex-shrink-0 pr-12">
+                        <div className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-[10px] text-accent font-black uppercase tracking-[0.2em] mb-4">
+                          Service Details
                         </div>
 
-                        <motion.div
-                          initial={{ opacity: 0, x: -8 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.16, duration: 0.22, ease: 'easeOut' }}
-                          className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
-                          style={{ padding: 'clamp(14px, 1.4vw, 18px)' }}
+                        <h2
+                          className="text-primary leading-tight"
+                          style={{
+                            fontSize: 'clamp(1.6rem, 2.1vw, 2.4rem)',
+                            fontWeight: 700,
+                            letterSpacing: '-0.02em',
+                            marginBottom: '22px',
+                          }}
                         >
-                          <div className="flex items-start justify-between gap-4 mb-4">
-                            <div className="flex items-center gap-3">
-                              <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-[1px]" />
-                              <h3
-                                className="text-primary"
-                                style={{
-                                  fontSize: 'clamp(1rem, 1.05vw, 1.1rem)',
-                                  fontWeight: 700,
-                                  lineHeight: 1.3,
-                                }}
-                              >
-                                Specialized Cleaning Services
-                              </h3>
-                            </div>
+                          {serviceData.find((s) => s.id === selectedService)?.title}
+                        </h2>
+                      </div>
 
-                            <span className="px-4 py-1.5 rounded-full bg-accent/80 text-white font-black uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">
-                              HIGH-IMPACT
-                            </span>
-                          </div>
-
-                          <div className="space-y-3 pl-1">
-                            {[
-                              'Window & Gutter Cleaning',
-                              'Carpet & Upholstery Steam Cleaning',
-                              'Exterior Pressure Washing',
-                            ].map((item, idx) => (
+                      <div className="scroll-fade-wrap flex-1 min-h-0">
+                        <div className="modal-scroll-area elegant-scroll">
+                          {selectedService === 1 ? (
+                            <div className="space-y-4 pb-6">
                               <motion.div
-                                key={idx}
                                 initial={{ opacity: 0, x: -8 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.2 + idx * 0.04, duration: 0.22, ease: 'easeOut' }}
-                                className="flex items-start gap-4"
+                                transition={{ delay: 0.06, duration: 0.22, ease: 'easeOut' }}
+                                className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
+                                style={{ padding: 'clamp(14px, 1.35vw, 18px)' }}
                               >
-                                <div className="mt-1 flex-shrink-0">
-                                  <CheckCircle2 className="w-5 h-5 text-accent" />
-                                </div>
-                                <p
-                                  className="text-dark/70 font-medium"
+                                <h3
+                                  className="text-primary mb-3"
                                   style={{
-                                    fontSize: 'clamp(0.83rem, 0.95vw, 0.92rem)',
-                                    lineHeight: 1.6,
+                                    fontSize: 'clamp(0.98rem, 1.02vw, 1.08rem)',
+                                    fontWeight: 700,
+                                    lineHeight: 1.3,
                                   }}
                                 >
-                                  {item}
-                                </p>
+                                  Residential Property management
+                                </h3>
+
+                                <div className="space-y-3">
+                                  <div>
+                                    <p
+                                      className="text-dark"
+                                      style={{
+                                        fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
+                                        fontWeight: 700,
+                                        lineHeight: 1.45,
+                                        marginBottom: '6px',
+                                      }}
+                                    >
+                                      A- second home owners
+                                    </p>
+
+                                    <ul
+                                      className="text-dark/70 list-disc"
+                                      style={{
+                                        paddingLeft: '1.1rem',
+                                        fontSize: 'clamp(0.8rem, 0.88vw, 0.875rem)',
+                                        lineHeight: 1.45,
+                                      }}
+                                    >
+                                      <li>weekly property inspection and reports</li>
+                                      <li>preventive maintenance and handyman services</li>
+                                      <li>
+                                        vendor management (plumbing, electrical, painting, snow
+                                        removal, landscaping, etc)
+                                      </li>
+                                    </ul>
+                                  </div>
+
+                                  <div>
+                                    <p
+                                      className="text-dark"
+                                      style={{
+                                        fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
+                                        fontWeight: 700,
+                                        lineHeight: 1.45,
+                                        marginBottom: '6px',
+                                      }}
+                                    >
+                                      B- short term rental property management
+                                    </p>
+
+                                    <ul
+                                      className="text-dark/70 list-disc"
+                                      style={{
+                                        paddingLeft: '1.1rem',
+                                        fontSize: 'clamp(0.8rem, 0.88vw, 0.875rem)',
+                                        lineHeight: 1.45,
+                                      }}
+                                    >
+                                      <li>inspections pre and post arrivals</li>
+                                      <li>check out cleanings</li>
+                                      <li>preventive maintenance and handyman services</li>
+                                      <li>24/7 guest assistance</li>
+                                      <li>vendor management</li>
+                                      <li>guest amenities and welcome baskets and more</li>
+                                    </ul>
+                                  </div>
+                                </div>
                               </motion.div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        {serviceData
-                          .find((s) => s.id === selectedService)
-                          ?.content.map((item, idx) => (
-                            <motion.div
-                              initial={{ opacity: 0, x: -8 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.06 + idx * 0.04, duration: 0.22, ease: 'easeOut' }}
-                              key={idx}
-                              className="flex items-start gap-4"
-                            >
-                              <div className="mt-1 flex-shrink-0">
-                                <CheckCircle2 className="w-5 h-5 text-accent" />
-                              </div>
-                              <p
-                                className="text-dark/70 font-medium"
-                                style={{
-                                  fontSize: 'clamp(0.83rem, 0.95vw, 0.92rem)',
-                                  lineHeight: 1.6,
-                                }}
+
+                              <motion.div
+                                initial={{ opacity: 0, x: -8 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.12, duration: 0.22, ease: 'easeOut' }}
+                                className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
+                                style={{ padding: 'clamp(14px, 1.35vw, 18px)' }}
                               >
-                                {item}
-                              </p>
-                            </motion.div>
-                          ))}
+                                <h3
+                                  className="text-primary mb-3"
+                                  style={{
+                                    fontSize: 'clamp(0.98rem, 1.02vw, 1.08rem)',
+                                    fontWeight: 700,
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  Commercial Property management assistance
+                                </h3>
+
+                                <div className="space-y-3">
+                                  <div>
+                                    <p
+                                      className="text-dark"
+                                      style={{
+                                        fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
+                                        fontWeight: 700,
+                                        lineHeight: 1.45,
+                                        marginBottom: '6px',
+                                      }}
+                                    >
+                                      A- Custodial services and property maintenance for commercial
+                                      buildings
+                                    </p>
+
+                                    <ul
+                                      className="text-dark/70 list-disc"
+                                      style={{
+                                        paddingLeft: '1.1rem',
+                                        fontSize: 'clamp(0.8rem, 0.88vw, 0.875rem)',
+                                        lineHeight: 1.45,
+                                      }}
+                                    >
+                                      <li>weekly property inspection & reports</li>
+                                      <li>preventive maintenance and handyman services</li>
+                                    </ul>
+                                  </div>
+
+                                  <div>
+                                    <p
+                                      className="text-dark"
+                                      style={{
+                                        fontSize: 'clamp(0.84rem, 0.92vw, 0.9rem)',
+                                        fontWeight: 700,
+                                        lineHeight: 1.45,
+                                      }}
+                                    >
+                                      B- Hoa, boards and commercial Property managers assistance
+                                    </p>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            </div>
+                          ) : selectedService === 2 ? (
+                            <div className="space-y-4 pb-6">
+                              <div className="space-y-4">
+                                {[
+                                  'Residential Cleaning (Checkout Clean, Move-Out Clean, Deep Clean)',
+                                  'Commercial Cleaning (Restaurants, Offices, Common Areas)',
+                                ].map((item, idx) => (
+                                  <motion.div
+                                    key={idx}
+                                    initial={{ opacity: 0, x: -8 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{
+                                      delay: 0.06 + idx * 0.04,
+                                      duration: 0.22,
+                                      ease: 'easeOut',
+                                    }}
+                                    className="flex items-start gap-4"
+                                  >
+                                    <div className="mt-1 flex-shrink-0">
+                                      <CheckCircle2 className="w-5 h-5 text-accent" />
+                                    </div>
+                                    <p
+                                      className="text-dark/70 font-medium"
+                                      style={{
+                                        fontSize: 'clamp(0.83rem, 0.95vw, 0.92rem)',
+                                        lineHeight: 1.6,
+                                      }}
+                                    >
+                                      {item}
+                                    </p>
+                                  </motion.div>
+                                ))}
+                              </div>
+
+                              <motion.div
+                                initial={{ opacity: 0, x: -8 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.16, duration: 0.22, ease: 'easeOut' }}
+                                className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
+                                style={{ padding: 'clamp(14px, 1.4vw, 18px)' }}
+                              >
+                                <div className="flex items-start justify-between gap-4 mb-4">
+                                  <div className="flex items-center gap-3">
+                                    <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-[1px]" />
+                                    <h3
+                                      className="text-primary"
+                                      style={{
+                                        fontSize: 'clamp(1rem, 1.05vw, 1.1rem)',
+                                        fontWeight: 700,
+                                        lineHeight: 1.3,
+                                      }}
+                                    >
+                                      Specialized Cleaning Services
+                                    </h3>
+                                  </div>
+
+                                  <span className="px-4 py-1.5 rounded-full bg-accent/80 text-white font-black uppercase tracking-[0.18em] text-[10px] whitespace-nowrap">
+                                    HIGH-IMPACT
+                                  </span>
+                                </div>
+
+                                <div className="space-y-3 pl-1">
+                                  {[
+                                    'Window & Gutter Cleaning',
+                                    'Carpet & Upholstery Steam Cleaning',
+                                    'Exterior Pressure Washing',
+                                  ].map((item, idx) => (
+                                    <motion.div
+                                      key={idx}
+                                      initial={{ opacity: 0, x: -8 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{
+                                        delay: 0.2 + idx * 0.04,
+                                        duration: 0.22,
+                                        ease: 'easeOut',
+                                      }}
+                                      className="flex items-start gap-4"
+                                    >
+                                      <div className="mt-1 flex-shrink-0">
+                                        <CheckCircle2 className="w-5 h-5 text-accent" />
+                                      </div>
+                                      <p
+                                        className="text-dark/70 font-medium"
+                                        style={{
+                                          fontSize: 'clamp(0.83rem, 0.95vw, 0.92rem)',
+                                          lineHeight: 1.6,
+                                        }}
+                                      >
+                                        {item}
+                                      </p>
+                                    </motion.div>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            </div>
+                          ) : (
+                            <div className="space-y-4 pb-6">
+                              {serviceData
+                                .find((s) => s.id === selectedService)
+                                ?.content.map((item, idx) => (
+                                  <motion.div
+                                    initial={{ opacity: 0, x: -8 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{
+                                      delay: 0.06 + idx * 0.04,
+                                      duration: 0.22,
+                                      ease: 'easeOut',
+                                    }}
+                                    key={idx}
+                                    className="flex items-start gap-4"
+                                  >
+                                    <div className="mt-1 flex-shrink-0">
+                                      <CheckCircle2 className="w-5 h-5 text-accent" />
+                                    </div>
+                                    <p
+                                      className="text-dark/70 font-medium"
+                                      style={{
+                                        fontSize: 'clamp(0.83rem, 0.95vw, 0.92rem)',
+                                        lineHeight: 1.6,
+                                      }}
+                                    >
+                                      {item}
+                                    </p>
+                                  </motion.div>
+                                ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               </div>
