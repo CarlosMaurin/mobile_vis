@@ -2,8 +2,7 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { TestimonialProps } from '../types';
 
-const TestimonialCard: React.FC<TestimonialProps> = ({ author, role, company, quote, description, avatar }) => {
-  // Styles derived from the requested snippet to provide "shading and light"
+const TestimonialCard: React.FC<TestimonialProps> = ({ company, quote, description, avatar }) => {
   const cardStyle: React.CSSProperties = {
     background: 'rgba(217, 217, 217, 0.58)',
     border: '1px solid white',
@@ -19,34 +18,27 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ author, role, company, qu
       data-testimonial-card
       className="
         flex-shrink-0
-        w-[clamp(240px,70vw,420px)]
+        w-[clamp(280px,70vw,420px)]
+        min-h-[clamp(360px,42vw,460px)]
         p-[clamp(16px,2.2vw,28px)]
         flex flex-col justify-between
         transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer
       "
     >
-      <div>
-        <div className="flex items-center gap-4 mb-6">
+      <div className="flex flex-col h-full">
+        <div className="mb-[clamp(18px,2vw,24px)] flex items-center justify-center">
           <img
             src={avatar}
-            alt={author}
-            className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-accent shadow-md"
+            alt={`${company} logo`}
+            className="h-[clamp(42px,5vw,64px)] w-auto max-w-[70%] object-contain"
           />
-          <div>
-            <h5 className="font-bold text-dark text-sm">{author}</h5>
-            <p className="text-[10px] text-dark/40 uppercase tracking-widest font-black">
-              {role}, {company}
-            </p>
-          </div>
         </div>
 
-        <p className='font-serif text-[clamp(18px,2.1vw,28px)] text-primary leading-tight mb-4 italic font-medium'>
-          "{quote}"
-        </p>
-
-        <p className="text-[clamp(12px,1.15vw,14px)] text-dark/60 leading-relaxed font-medium">
-          {description}
-        </p>
+        <div className="flex-1 flex items-start">
+          <p className="w-full font-medium italic text-primary leading-[1.55] text-[clamp(13px,1.28vw,18px)]">
+            "{quote} {description}"
+          </p>
+        </div>
       </div>
 
       <div className="mt-6 pt-5 border-t border-black/5 flex items-center justify-between">
@@ -78,7 +70,6 @@ const Testimonials: React.FC = () => {
 
       const cards = Array.from(trackRef.current.querySelectorAll<HTMLElement>('[data-testimonial-card]'));
 
-      // Fallback if cards are not yet measurable
       if (cards.length === 0) {
         const fallbackMax = Math.max(0, trackRef.current.scrollWidth - viewportWidth);
         setStartScrollToCenter(0);
@@ -94,7 +85,6 @@ const Testimonials: React.FC = () => {
       const first = cards[0];
       const last = cards[cards.length - 1];
 
-      // px needed so that the card is centered in the viewport
       const centerOffset = (el: HTMLElement) => {
         const left = el.offsetLeft;
         const width = el.offsetWidth;
@@ -107,10 +97,9 @@ const Testimonials: React.FC = () => {
       setStartScrollToCenter(start);
       setMaxScrollToCenter(end);
 
-      // Reduce "sensitivity" by making the vertical scroll distance proportional to horizontal travel.
       const intro = viewportHeight * 0.9;
       const horizontal = (end - start) * 1.35;
-      const extra = viewportHeight * 0.35; // small scroll after last card is centered
+      const extra = viewportHeight * 0.35;
       setSectionHeightPx(viewportHeight + intro + horizontal + extra);
     };
 
@@ -130,24 +119,18 @@ const Testimonials: React.FC = () => {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    // Softer spring to avoid the "too jumpy" feel on trackpads.
     stiffness: 55,
     damping: 30,
     restDelta: 0.001,
   });
 
-  // Fase 1: El título "TESTIMONIALS"
   const titleOpacity = useTransform(smoothProgress, [0, 0.06, 0.18, 0.3], [0, 1, 1, 0]);
   const titleScale = useTransform(smoothProgress, [0.18, 0.3], [1, 0.7]);
   const titleY = useTransform(smoothProgress, [0, 0.06], ['80px', '0px']);
 
-  // Fase 2: Entrada de las cards (Vertical)
   const cardsY = useTransform(smoothProgress, [0.12, 0.32], ['100vh', '0vh']);
   const cardsOpacity = useTransform(smoothProgress, [0.18, 0.3], [0, 1]);
 
-  // Fase 3: Scroll Horizontal
-  // Mantiene la primera centrada un ratito, y mueve hasta centrar la última.
-  // Luego deja un scroll extra (0.92 -> 1.0) para recién ahí soltar el sticky.
   const horizontalX = useTransform(smoothProgress, [0, 0.34, 0.42, 0.92], [
     `-${startScrollToCenter}px`,
     `-${startScrollToCenter}px`,
@@ -164,85 +147,61 @@ const Testimonials: React.FC = () => {
 
   const testimonials: TestimonialProps[] = [
     {
-      author: 'Felix Ohswald',
-      role: 'CEO & Founder',
-      company: 'GoStudent',
-      quote: 'The most important part of growing your business is establishing a foundation of trustworthy employees.',
-      description: "Even if you are hiring quickly, it's vital that every new hire embodies the company culture.",
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Benedict Kurz',
-      role: 'CEO & Co-Founder',
-      company: 'Knowunity',
-      quote: 'We were able to fill several of our most critical key positions with top-tier talent...',
-      description: "What impressed us most was the unique combination of speed, precision, and the team's deep market expertise.",
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Laurent Martinot',
-      role: 'CEO & Founder',
-      company: 'Sunrise',
-      quote: 'If recruiting were an Olympic sport, Highflyers would already have several gold medals...',
+      author: '',
+      role: '',
+      company: 'Fairly',
+      quote:
+        'As the Market Manager for Fairly (rental management platform), I rely on expert local property caretakers to be the boots-on-the-ground contacts for homeowners and guests.',
       description:
-        'Efficient, sharp, and always in a good mood. They somehow manage to make job talks feel like coffee with a friend.',
-      avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150',
+        "I am so glad I partnered with VIS Home Services to represent our Aspen market! Florencia, Geremias are professional, responsive, reliable, and deeply knowledgeable local hosts. We're excited to continue partnering with them for our new rental homes, knowing they offer extensive services and have an outstanding local reputation - they know everyone in Aspen! VIS Home Services is an invaluable asset to any rental property in town.",
+      avatar: 'https://res.cloudinary.com/deit2ncmp/image/upload/v1773074619/fairly_c5xwlf.png',
     },
     {
-      author: 'Sebastian Haupt',
-      role: 'CEO & Founder',
-      company: 'SelfStay',
-      quote: 'Outstanding hospitality services. We’ve already partnered with them multiple times.',
-      description: 'The results have been excellent every time. A perfect match in both expertise and culture fit.',
-      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=150',
+      author: '',
+      role: '',
+      company: 'Elevated',
+      quote:
+        'VIS consistently delivers exceptional housekeeping and maintenance services.',
+      description:
+        'Every property is left absolutely spotless after each clean, which has helped us consistently earn 5-star reviews from our guests. Their inspectors are incredibly meticulous, carefully identifying even the smallest maintenance issues and ensuring they are addressed immediately. Their attention to detail and commitment to excellence truly set them apart.',
+      avatar: 'https://res.cloudinary.com/deit2ncmp/image/upload/v1773074619/elevated_k6m9ou.png',
     },
     {
-      author: 'Julia Chen',
-      role: 'Operations Director',
-      company: 'LuxSpace',
-      quote: 'Reliability is hard to come by, but V.I.S. delivers it consistently every single week.',
-      description: 'Their attention to detail and proactive approach has transformed how we manage our properties.',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+      author: '',
+      role: '',
+      company: 'Aspen Business Services',
+      quote:
+        'Aspen Business Services highly recommends Village Integral Services (VIS) for their exceptional professionalism and technical competence.',
+      description:
+        'From routine maintenance to time-sensitive repairs, their team consistently delivers dependable results across our residential and commercial portfolios. They are a reliable partner that directly contributes to operational stability and tenant satisfaction.',
+      avatar: 'https://res.cloudinary.com/deit2ncmp/image/upload/v1773074619/aspen_business_services_notnu6.png',
     },
     {
-      author: 'Marco Rossi',
-      role: 'Asset Manager',
-      company: 'Equinox Realty',
-      quote: 'The concierge services are a game-changer for our high-end rental portfolio.',
-      description: 'Guests always leave glowing reviews about the personalized attention they receive during their stay.',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Sarah Jenkins',
-      role: 'Board President',
-      company: 'Highland HOA',
-      quote: 'V.I.S. understands the unique needs of a residential community better than anyone.',
-      description: 'From groundskeeping to general maintenance, they keep our community looking impeccable year-round.',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Thomas Weber',
-      role: 'General Manager',
-      company: 'Alpine Retreats',
-      quote: 'A true partner in hospitality. They treat our property as if it were their own.',
-      description: 'We have seen a significant increase in guest satisfaction since we started working with their team.',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+      author: '',
+      role: '',
+      company: 'Summit Property Group',
+      quote:
+        'VIS has become a trusted extension of our local operations in Aspen.',
+      description:
+        'Their team communicates clearly, responds quickly, and maintains an exceptional standard across every service touchpoint. From guest readiness to ongoing property care, they consistently help us protect the quality of our homes and deliver a seamless ownership experience.',
+      avatar:
+        'https://dummyimage.com/600x180/ffffff/005B43.png&text=LOGO',
     },
   ];
 
   return (
     <section ref={containerRef} id="testimonials" className="relative bg-cream" style={sectionStyle}>
-      {/* padding-top para evitar choque visual con el navbar */}
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-[clamp(72px,10vh,120px)]">
-        {/* Título animado */}
-        <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="absolute z-20 text-center pointer-events-none w-full">
+        <motion.div
+          style={{ opacity: titleOpacity, scale: titleScale, y: titleY }}
+          className="absolute z-20 text-center pointer-events-none w-full"
+        >
           <h3 className="text-[30px] md:text-8xl font-black text-primary tracking-[0.4em] uppercase mb-4 drop-shadow-sm pl-[0.4em]">
             TESTIMONIALS
           </h3>
           <motion.div className="h-1.5 bg-accent mx-auto rounded-full" style={{ width: '120px' }} />
         </motion.div>
 
-        {/* Contenedor de Cards - Animación Vertical + Horizontal */}
         <motion.div style={{ y: cardsY, opacity: cardsOpacity }} className="relative z-10 w-full">
           <motion.div
             ref={trackRef}
@@ -256,7 +215,6 @@ const Testimonials: React.FC = () => {
           </motion.div>
         </motion.div>
 
-        {/* Indicador visual de progreso del scroll */}
         <div className="absolute bottom-12 w-48 h-0.5 bg-dark/5 rounded-full overflow-hidden">
           <motion.div className="h-full bg-primary" style={{ scaleX: scrollYProgress, transformOrigin: 'left' }} />
         </div>
@@ -268,7 +226,6 @@ const Testimonials: React.FC = () => {
           Keep scrolling to see all stories
         </motion.div>
 
-        {/* Hint mini: la sección suelta el sticky cuando la última está centrada + un scroll extra */}
         <motion.div
           style={{ opacity: holdAfterLastOpacity }}
           className="absolute top-6 right-6 text-[10px] font-black tracking-[0.25em] uppercase text-dark/20"
