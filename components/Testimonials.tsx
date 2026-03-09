@@ -18,30 +18,30 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ company, quote, descripti
       data-testimonial-card
       className="
         flex-shrink-0
-        w-[clamp(280px,70vw,420px)]
-        min-h-[clamp(360px,42vw,460px)]
-        p-[clamp(16px,2.2vw,28px)]
+        w-[clamp(364px,91vw,546px)]
+        h-[clamp(360px,68vh,620px)]
+        p-[clamp(16px,2vw,26px)]
         flex flex-col justify-between
         transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer
       "
     >
-      <div className="flex flex-col h-full">
-        <div className="mb-[clamp(18px,2vw,24px)] flex items-center justify-center">
+      <div className="flex flex-col h-full min-h-0">
+        <div className="mb-[clamp(14px,1.8vw,22px)] flex items-center justify-center">
           <img
             src={avatar}
             alt={`${company} logo`}
-            className="h-[clamp(42px,5vw,64px)] w-auto max-w-[70%] object-contain"
+            className="h-[clamp(56px,7vw,92px)] w-auto max-w-[78%] object-contain"
           />
         </div>
 
-        <div className="flex-1 flex items-start">
-          <p className="w-full font-medium italic text-primary leading-[1.55] text-[clamp(13px,1.28vw,18px)]">
+        <div className="flex-1 min-h-0 flex items-start overflow-hidden">
+          <p className="w-full font-medium italic text-primary leading-[1.52] text-[clamp(9.75px,0.96vw,13.5px)]">
             "{quote} {description}"
           </p>
         </div>
       </div>
 
-      <div className="mt-6 pt-5 border-t border-black/5 flex items-center justify-between">
+      <div className="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
         <span className="text-[10px] font-black uppercase text-accent tracking-tighter">{company}</span>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((s) => (
@@ -184,14 +184,13 @@ const Testimonials: React.FC = () => {
         'VIS has become a trusted extension of our local operations in Aspen.',
       description:
         'Their team communicates clearly, responds quickly, and maintains an exceptional standard across every service touchpoint. From guest readiness to ongoing property care, they consistently help us protect the quality of our homes and deliver a seamless ownership experience.',
-      avatar:
-        'https://dummyimage.com/600x180/ffffff/005B43.png&text=LOGO',
+      avatar: 'https://dummyimage.com/600x180/ffffff/005B43.png&text=LOGO',
     },
   ];
 
   return (
     <section ref={containerRef} id="testimonials" className="relative bg-cream" style={sectionStyle}>
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-[clamp(72px,10vh,120px)]">
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-[clamp(96px,14vh,148px)]">
         <motion.div
           style={{ opacity: titleOpacity, scale: titleScale, y: titleY }}
           className="absolute z-20 text-center pointer-events-none w-full"
@@ -206,7 +205,7 @@ const Testimonials: React.FC = () => {
           <motion.div
             ref={trackRef}
             style={{ x: horizontalX }}
-            className="flex gap-[clamp(14px,3vw,40px)] px-[clamp(18px,10vw,25vw)] py-10 w-max"
+            className="flex gap-[clamp(14px,3vw,40px)] px-[clamp(18px,8vw,20vw)] py-6 w-max"
           >
             {testimonials.map((t, i) => (
               <TestimonialCard key={i} {...t} />
