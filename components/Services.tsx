@@ -289,6 +289,42 @@ const Services: React.FC = () => {
 
   return (
     <section id="services" className="bg-cream scroll-mt-28 md:scroll-mt-36">
+      <style>{`
+        .elegant-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(49, 103, 101, 0.65) rgba(49, 103, 101, 0.08);
+          scroll-behavior: smooth;
+        }
+
+        .elegant-scroll::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        .elegant-scroll::-webkit-scrollbar-track {
+          background: rgba(49, 103, 101, 0.08);
+          border-radius: 999px;
+          margin: 18px 0;
+        }
+
+        .elegant-scroll::-webkit-scrollbar-thumb {
+          background: linear-gradient(
+            180deg,
+            rgba(124, 168, 122, 0.95) 0%,
+            rgba(49, 103, 101, 0.95) 100%
+          );
+          border-radius: 999px;
+          border: 2px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .elegant-scroll::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(
+            180deg,
+            rgba(124, 168, 122, 1) 0%,
+            rgba(49, 103, 101, 1) 100%
+          );
+        }
+      `}</style>
+
       <div
         ref={containerRef}
         className="relative"
@@ -455,7 +491,7 @@ const Services: React.FC = () => {
             >
               <div onClick={(e) => e.stopPropagation()} className="w-full flex justify-center">
                 <div
-                  className="w-full rounded-[2.25rem] shadow-2xl overflow-hidden bg-white"
+                  className="elegant-scroll w-full rounded-[2.25rem] shadow-2xl overflow-hidden bg-white"
                   style={{
                     maxWidth: 'min(720px, 92vw)',
                     maxHeight: `calc(100vh - ${navOffsetPx}px - 10px)`,
@@ -490,11 +526,7 @@ const Services: React.FC = () => {
                         <motion.div
                           initial={{ opacity: 0, x: -8 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{
-                            delay: 0.06,
-                            duration: 0.22,
-                            ease: 'easeOut',
-                          }}
+                          transition={{ delay: 0.06, duration: 0.22, ease: 'easeOut' }}
                           className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
                           style={{ padding: 'clamp(14px, 1.35vw, 18px)' }}
                         >
@@ -575,11 +607,7 @@ const Services: React.FC = () => {
                         <motion.div
                           initial={{ opacity: 0, x: -8 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{
-                            delay: 0.12,
-                            duration: 0.22,
-                            ease: 'easeOut',
-                          }}
+                          transition={{ delay: 0.12, duration: 0.22, ease: 'easeOut' }}
                           className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
                           style={{ padding: 'clamp(14px, 1.35vw, 18px)' }}
                         >
@@ -648,11 +676,7 @@ const Services: React.FC = () => {
                               key={idx}
                               initial={{ opacity: 0, x: -8 }}
                               animate={{ opacity: 1, x: 0 }}
-                              transition={{
-                                delay: 0.06 + idx * 0.04,
-                                duration: 0.22,
-                                ease: 'easeOut',
-                              }}
+                              transition={{ delay: 0.06 + idx * 0.04, duration: 0.22, ease: 'easeOut' }}
                               className="flex items-start gap-4"
                             >
                               <div className="mt-1 flex-shrink-0">
@@ -674,11 +698,7 @@ const Services: React.FC = () => {
                         <motion.div
                           initial={{ opacity: 0, x: -8 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{
-                            delay: 0.16,
-                            duration: 0.22,
-                            ease: 'easeOut',
-                          }}
+                          transition={{ delay: 0.16, duration: 0.22, ease: 'easeOut' }}
                           className="rounded-[1.25rem] border border-accent/20 bg-accent/10"
                           style={{ padding: 'clamp(14px, 1.4vw, 18px)' }}
                         >
@@ -712,11 +732,7 @@ const Services: React.FC = () => {
                                 key={idx}
                                 initial={{ opacity: 0, x: -8 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{
-                                  delay: 0.2 + idx * 0.04,
-                                  duration: 0.22,
-                                  ease: 'easeOut',
-                                }}
+                                transition={{ delay: 0.2 + idx * 0.04, duration: 0.22, ease: 'easeOut' }}
                                 className="flex items-start gap-4"
                               >
                                 <div className="mt-1 flex-shrink-0">
@@ -744,11 +760,7 @@ const Services: React.FC = () => {
                             <motion.div
                               initial={{ opacity: 0, x: -8 }}
                               animate={{ opacity: 1, x: 0 }}
-                              transition={{
-                                delay: 0.06 + idx * 0.04,
-                                duration: 0.22,
-                                ease: 'easeOut',
-                              }}
+                              transition={{ delay: 0.06 + idx * 0.04, duration: 0.22, ease: 'easeOut' }}
                               key={idx}
                               className="flex items-start gap-4"
                             >
