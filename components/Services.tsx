@@ -295,17 +295,17 @@ const Services: React.FC = () => {
           scrollbar-color: rgba(49, 103, 101, 0.58) transparent;
           scroll-behavior: smooth;
         }
-
+      
         .elegant-scroll::-webkit-scrollbar {
           width: 8px;
         }
-
+      
         .elegant-scroll::-webkit-scrollbar-track {
           background: transparent;
           border-radius: 999px;
           margin: 10px 0;
         }
-
+      
         .elegant-scroll::-webkit-scrollbar-thumb {
           background: linear-gradient(
             180deg,
@@ -315,7 +315,7 @@ const Services: React.FC = () => {
           border-radius: 999px;
           border: 1.5px solid rgba(255, 255, 255, 0.95);
         }
-
+      
         .elegant-scroll::-webkit-scrollbar-thumb:hover {
           background: linear-gradient(
             180deg,
@@ -323,45 +323,7 @@ const Services: React.FC = () => {
             rgba(49, 103, 101, 1) 100%
           );
         }
-
-        .scroll-fade-wrap {
-          position: relative;
-          height: 100%;
-          overflow: hidden;
-          border-radius: inherit;
-        }
-
-        .scroll-fade-wrap::before,
-        .scroll-fade-wrap::after {
-          content: '';
-          position: absolute;
-          left: 0;
-          right: 14px;
-          height: 28px;
-          pointer-events: none;
-          z-index: 3;
-        }
-
-        .scroll-fade-wrap::before {
-          top: 0;
-          background: linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.98) 0%,
-            rgba(255, 255, 255, 0.82) 45%,
-            rgba(255, 255, 255, 0) 100%
-          );
-        }
-
-        .scroll-fade-wrap::after {
-          bottom: 0;
-          background: linear-gradient(
-            0deg,
-            rgba(255, 255, 255, 0.98) 0%,
-            rgba(255, 255, 255, 0.82) 45%,
-            rgba(255, 255, 255, 0) 100%
-          );
-        }
-
+      
         .modal-scroll-area {
           height: 100%;
           overflow-y: auto;
@@ -578,7 +540,7 @@ const Services: React.FC = () => {
                         </h2>
                       </div>
 
-                      <div className="scroll-fade-wrap flex-1 min-h-0">
+                      <div className="flex-1 min-h-0">
                         <div className="modal-scroll-area elegant-scroll">
                           {selectedService === 1 ? (
                             <div className="space-y-4 pb-6">
