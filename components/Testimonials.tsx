@@ -1,280 +1,278 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { TestimonialProps } from '../types';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  MotionValue,
+} from "framer-motion";
 
-const TestimonialCard: React.FC<TestimonialProps> = ({ author, role, company, quote, description, avatar }) => {
-  // Styles derived from the requested snippet to provide "shading and light"
-  const cardStyle: React.CSSProperties = {
-    background: 'rgba(217, 217, 217, 0.58)',
-    border: '1px solid white',
-    boxShadow: '12px 17px 51px rgba(0, 0, 0, 0.22)',
-    backdropFilter: 'blur(6px)',
-    WebkitBackdropFilter: 'blur(6px)',
-    borderRadius: '17px',
-  };
+type TestimonialItem = {
+  id: number;
+  company: string;
+  testimonial: string;
+  logo?: string;
+  isTextLogo?: boolean;
+  textLogo?: string;
+};
+
+interface TestimonialCardProps {
+  item: TestimonialItem;
+  progress: MotionValue<number>;
+  range: [number, number];
+  index: number;
+}
+
+const TestimonialCard: React.FC<TestimonialCardProps> = ({
+  item,
+  progress,
+  range,
+  index,
+}) => {
+  const opacity = useTransform(progress, range, [0, 1]);
+  const y = useTransform(progress, range, [80, 0]);
+  const scale = useTransform(progress, range, [0.96, 1]);
 
   return (
-    <div
-      style={cardStyle}
-      data-testimonial-card
-      className="
-        flex-shrink-0
-        w-[clamp(240px,70vw,420px)]
-        p-[clamp(16px,2.2vw,28px)]
-        flex flex-col justify-between
-        transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer
-      "
+    <motion.div
+      style={{
+        opacity,
+        y,
+        scale,
+      }}
+      className="absolute inset-0 flex items-center justify-center px-4 md:px-6"
     >
-      <div>
-        <div className="flex items-center gap-4 mb-6">
-          <img
-            src={avatar}
-            alt={author}
-            className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-accent shadow-md"
-          />
-          <div>
-            <h5 className="font-bold text-dark text-sm">{author}</h5>
-            <p className="text-[10px] text-dark/40 uppercase tracking-widest font-black">
-              {role}, {company}
+      <div
+        className="relative w-full mx-auto rounded-[2rem] md:rounded-[2.25rem] bg-white shadow-[0_24px_70px_rgba(17,24,39,0.12)] overflow-hidden"
+        style={{
+          maxWidth: "min(860px, 92vw)",
+          minHeight: "clamp(440px, 66vh, 620px)",
+          zIndex: 20 + index,
+        }}
+      >
+        <div className="absolute inset-0 rounded-[2rem] md:rounded-[2.25rem] pointer-events-none border border-[rgba(49,103,101,0.12)]" />
+
+        <div className="relative h-full flex flex-col justify-between p-6 md:p-8 lg:p-10">
+          <div className="flex justify-center mb-6 md:mb-8">
+            <div
+              className="flex items-center justify-center"
+              style={{
+                minHeight: "clamp(56px, 7vh, 80px)",
+                maxWidth: "clamp(180px, 24vw, 260px)",
+              }}
+            >
+              {item.isTextLogo ? (
+                <div
+                  className="text-center"
+                  style={{
+                    color: "#316765",
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    fontSize: "clamp(0.95rem, 1.3vw, 1.2rem)",
+                    lineHeight: 1.15,
+                  }}
+                >
+                  {item.textLogo}
+                </div>
+              ) : (
+                <img
+                  src={item.logo}
+                  alt={`${item.company} logo`}
+                  className="block object-contain"
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "clamp(48px, 6vh, 72px)",
+                  }}
+                />
+              )}
+            </div>
+          </div>
+
+          <div className="flex-1 flex items-center">
+            <p
+              className="text-center mx-auto"
+              style={{
+                color: "#316765",
+                maxWidth: "68ch",
+                fontSize: "clamp(0.92rem, 1.08vw, 1.08rem)",
+                lineHeight: 1.72,
+                fontWeight: 500,
+                textWrap: "pretty",
+              }}
+            >
+              “{item.testimonial}”
             </p>
           </div>
+
+          <div className="pt-6 md:pt-8 flex justify-center">
+            <div
+              className="inline-flex items-center rounded-full bg-[rgba(124,168,122,0.12)] border border-[rgba(49,103,101,0.12)]"
+              style={{
+                padding: "10px 18px",
+              }}
+            >
+              <span
+                style={{
+                  color: "#316765",
+                  fontSize: "clamp(0.82rem, 0.95vw, 0.96rem)",
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {item.company}
+              </span>
+            </div>
+          </div>
         </div>
-
-        <p className='font-serif text-[clamp(18px,2.1vw,28px)] text-primary leading-tight mb-4 italic font-medium'>
-          "{quote}"
-        </p>
-
-        <p className="text-[clamp(12px,1.15vw,14px)] text-dark/60 leading-relaxed font-medium">
-          {description}
-        </p>
       </div>
-
-      <div className="mt-6 pt-5 border-t border-black/5 flex items-center justify-between">
-        <span className="text-[10px] font-black uppercase text-accent tracking-tighter">{company}</span>
-        <div className="flex gap-1">
-          {[1, 2, 3, 4, 5].map((s) => (
-            <div key={s} className="w-1 h-1 rounded-full bg-accent/40" />
-          ))}
-        </div>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 
 const Testimonials: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [wrapperHeightPx, setWrapperHeightPx] = useState<number>(0);
 
-  const [startScrollToCenter, setStartScrollToCenter] = useState(0);
-  const [maxScrollToCenter, setMaxScrollToCenter] = useState(0);
-  const [sectionHeightPx, setSectionHeightPx] = useState<number | null>(null);
+  const testimonials = useMemo<TestimonialItem[]>(
+    () => [
+      {
+        id: 1,
+        company: "Fairly",
+        logo: "https://res.cloudinary.com/deit2ncmp/image/upload/v1773074619/fairly_c5xwlf.png",
+        testimonial:
+          "As the Market Manager for Fairly (rental management platform), I rely on expert local property caretakers to be the boots-on-the-ground contacts for homeowners and guests. I am so glad I partnered with VIS Home Services to represent our Aspen market! Florencia, Geremias are professional, responsive, reliable, and deeply knowledgeable local hosts. We're excited to continue partnering with them for our new rental homes, knowing they offer extensive services and have an outstanding local reputation - they know everyone in Aspen! VIS Home Services is an invaluable asset to any rental property in town.",
+      },
+      {
+        id: 2,
+        company: "Elevated",
+        logo: "https://res.cloudinary.com/deit2ncmp/image/upload/v1773074619/elevated_k6m9ou.png",
+        testimonial:
+          "VIS consistently delivers exceptional housekeeping and maintenance services. Every property is left absolutely spotless after each clean, which has helped us consistently earn 5-star reviews from our guests. Their inspectors are incredibly meticulous, carefully identifying even the smallest maintenance issues and ensuring they are addressed immediately. Their attention to detail and commitment to excellence truly set them apart.",
+      },
+      {
+        id: 3,
+        company: "Aspen Business Services",
+        logo: "https://res.cloudinary.com/deit2ncmp/image/upload/v1773074619/aspen_business_services_notnu6.png",
+        testimonial:
+          "Aspen Business Services highly recommends Village Integral Services (VIS) for their exceptional professionalism and technical competence. From routine maintenance to time-sensitive repairs, their team consistently delivers dependable results across our residential and commercial portfolios. They are a reliable partner that directly contributes to operational stability and tenant satisfaction.",
+      },
+      {
+        id: 4,
+        company: "Summit Residential Group",
+        isTextLogo: true,
+        textLogo: "Summit Residential Group",
+        testimonial:
+          "VIS has become a trusted extension of our local operations. Their team communicates clearly, responds quickly, and consistently upholds a very high standard across inspections, maintenance coordination, and property readiness. In a market like Aspen, having a partner with strong local relationships and dependable execution makes a meaningful difference, and VIS has delivered that value repeatedly.",
+      },
+    ],
+    []
+  );
 
   useEffect(() => {
-    const calculateBounds = () => {
-      if (!trackRef.current) return;
+    const calc = () => {
+      const vh = window.innerHeight;
+      const vw = window.innerWidth;
+      const count = testimonials.length;
 
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
+      let screensPerCard = 1.18;
 
-      const cards = Array.from(trackRef.current.querySelectorAll<HTMLElement>('[data-testimonial-card]'));
+      if (vw >= 768) screensPerCard = 1.12;
+      if (vw >= 1024) screensPerCard = 1.05;
+      if (vw >= 1440) screensPerCard = 1.0;
+      if (vh < 760) screensPerCard += 0.08;
 
-      // Fallback if cards are not yet measurable
-      if (cards.length === 0) {
-        const fallbackMax = Math.max(0, trackRef.current.scrollWidth - viewportWidth);
-        setStartScrollToCenter(0);
-        setMaxScrollToCenter(fallbackMax);
+      const introOutroScreens = vw >= 1024 ? 1.55 : 1.35;
+      const totalScreens = count * screensPerCard + introOutroScreens;
 
-        const intro = viewportHeight * 0.9;
-        const horizontal = fallbackMax * 1.35;
-        const extra = viewportHeight * 0.35;
-        setSectionHeightPx(viewportHeight + intro + horizontal + extra);
-        return;
-      }
-
-      const first = cards[0];
-      const last = cards[cards.length - 1];
-
-      // px needed so that the card is centered in the viewport
-      const centerOffset = (el: HTMLElement) => {
-        const left = el.offsetLeft;
-        const width = el.offsetWidth;
-        return left + width / 2 - viewportWidth / 2;
-      };
-
-      const start = Math.max(0, centerOffset(first));
-      const end = Math.max(start, centerOffset(last));
-
-      setStartScrollToCenter(start);
-      setMaxScrollToCenter(end);
-
-      // Reduce "sensitivity" by making the vertical scroll distance proportional to horizontal travel.
-      const intro = viewportHeight * 0.9;
-      const horizontal = (end - start) * 1.35;
-      const extra = viewportHeight * 0.35; // small scroll after last card is centered
-      setSectionHeightPx(viewportHeight + intro + horizontal + extra);
+      setWrapperHeightPx(Math.round(vh * totalScreens));
     };
 
-    calculateBounds();
-    const timer = setTimeout(calculateBounds, 150);
+    calc();
+    window.addEventListener("resize", calc);
+    window.addEventListener("orientationchange", calc);
 
-    window.addEventListener('resize', calculateBounds);
     return () => {
-      window.removeEventListener('resize', calculateBounds);
-      clearTimeout(timer);
+      window.removeEventListener("resize", calc);
+      window.removeEventListener("orientationchange", calc);
     };
-  }, []);
+  }, [testimonials.length]);
 
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
+    target: sectionRef,
+    offset: ["start start", "end end"],
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    // Softer spring to avoid the "too jumpy" feel on trackpads.
-    stiffness: 55,
-    damping: 30,
-    restDelta: 0.001,
+    stiffness: 70,
+    damping: 24,
+    mass: 0.55,
   });
 
-  // Fase 1: El título "TESTIMONIALS"
-  const titleOpacity = useTransform(smoothProgress, [0, 0.06, 0.18, 0.3], [0, 1, 1, 0]);
-  const titleScale = useTransform(smoothProgress, [0.18, 0.3], [1, 0.7]);
-  const titleY = useTransform(smoothProgress, [0, 0.06], ['80px', '0px']);
+  const titleOpacity = useTransform(smoothProgress, [0, 0.1], [0, 1]);
+  const titleY = useTransform(smoothProgress, [0, 0.1], [18, 0]);
+  const bigTitleOpacity = useTransform(smoothProgress, [0, 0.12], [0, 0.06]);
 
-  // Fase 2: Entrada de las cards (Vertical)
-  const cardsY = useTransform(smoothProgress, [0.12, 0.32], ['100vh', '0vh']);
-  const cardsOpacity = useTransform(smoothProgress, [0.18, 0.3], [0, 1]);
+  const cardRanges = useMemo(() => {
+    const count = testimonials.length;
+    const start = 0.12;
+    const end = 0.92;
+    const slot = (end - start) / count;
 
-  // Fase 3: Scroll Horizontal
-  // Mantiene la primera centrada un ratito, y mueve hasta centrar la última.
-  // Luego deja un scroll extra (0.92 -> 1.0) para recién ahí soltar el sticky.
-  const horizontalX = useTransform(smoothProgress, [0, 0.34, 0.42, 0.92], [
-    `-${startScrollToCenter}px`,
-    `-${startScrollToCenter}px`,
-    `-${startScrollToCenter}px`,
-    `-${maxScrollToCenter}px`,
-  ]);
-
-  const holdAfterLastOpacity = useTransform(smoothProgress, [0.9, 0.92, 1], [1, 1, 0]);
-  const scrollHintOpacity = useTransform(smoothProgress, [0.28, 0.36, 0.88, 0.94], [0, 0.4, 0.4, 0]);
-
-  const sectionStyle = useMemo<React.CSSProperties>(() => {
-    return sectionHeightPx ? { height: `${sectionHeightPx}px` } : { height: '640vh' };
-  }, [sectionHeightPx]);
-
-  const testimonials: TestimonialProps[] = [
-    {
-      author: 'Felix Ohswald',
-      role: 'CEO & Founder',
-      company: 'GoStudent',
-      quote: 'The most important part of growing your business is establishing a foundation of trustworthy employees.',
-      description: "Even if you are hiring quickly, it's vital that every new hire embodies the company culture.",
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Benedict Kurz',
-      role: 'CEO & Co-Founder',
-      company: 'Knowunity',
-      quote: 'We were able to fill several of our most critical key positions with top-tier talent...',
-      description: "What impressed us most was the unique combination of speed, precision, and the team's deep market expertise.",
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Laurent Martinot',
-      role: 'CEO & Founder',
-      company: 'Sunrise',
-      quote: 'If recruiting were an Olympic sport, Highflyers would already have several gold medals...',
-      description:
-        'Efficient, sharp, and always in a good mood. They somehow manage to make job talks feel like coffee with a friend.',
-      avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Sebastian Haupt',
-      role: 'CEO & Founder',
-      company: 'SelfStay',
-      quote: 'Outstanding hospitality services. We’ve already partnered with them multiple times.',
-      description: 'The results have been excellent every time. A perfect match in both expertise and culture fit.',
-      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Julia Chen',
-      role: 'Operations Director',
-      company: 'LuxSpace',
-      quote: 'Reliability is hard to come by, but V.I.S. delivers it consistently every single week.',
-      description: 'Their attention to detail and proactive approach has transformed how we manage our properties.',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Marco Rossi',
-      role: 'Asset Manager',
-      company: 'Equinox Realty',
-      quote: 'The concierge services are a game-changer for our high-end rental portfolio.',
-      description: 'Guests always leave glowing reviews about the personalized attention they receive during their stay.',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Sarah Jenkins',
-      role: 'Board President',
-      company: 'Highland HOA',
-      quote: 'V.I.S. understands the unique needs of a residential community better than anyone.',
-      description: 'From groundskeeping to general maintenance, they keep our community looking impeccable year-round.',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Thomas Weber',
-      role: 'General Manager',
-      company: 'Alpine Retreats',
-      quote: 'A true partner in hospitality. They treat our property as if it were their own.',
-      description: 'We have seen a significant increase in guest satisfaction since we started working with their team.',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
-    },
-  ];
+    return testimonials.map((_, i) => {
+      const localStart = start + i * slot;
+      const localEnd = localStart + slot * 0.78;
+      return [localStart, localEnd] as [number, number];
+    });
+  }, [testimonials]);
 
   return (
-    <section ref={containerRef} id="testimonials" className="relative bg-cream" style={sectionStyle}>
-      {/* padding-top para evitar choque visual con el navbar */}
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-[clamp(72px,10vh,120px)]">
-        {/* Título animado */}
-        <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="absolute z-20 text-center pointer-events-none w-full">
-          <h3 className="text-[30px] md:text-8xl font-black text-primary tracking-[0.4em] uppercase mb-4 drop-shadow-sm pl-[0.4em]">
-            TESTIMONIALS
-          </h3>
-          <motion.div className="h-1.5 bg-accent mx-auto rounded-full" style={{ width: '120px' }} />
-        </motion.div>
+    <section id="testimonials" className="bg-cream scroll-mt-28 md:scroll-mt-36">
+      <div
+        ref={sectionRef}
+        className="relative"
+        style={{ height: wrapperHeightPx ? `${wrapperHeightPx}px` : "560vh" }}
+      >
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <div className="max-w-7xl mx-auto w-full h-full px-6">
+            <div className="h-full flex flex-col justify-center pt-24 md:pt-28 pb-16">
+              <div className="relative mb-10 md:mb-12">
+                <motion.h2
+                  style={{ opacity: bigTitleOpacity }}
+                  className="hidden md:block pointer-events-none select-none absolute left-0 -top-10 font-black text-dark tracking-tighter uppercase leading-none"
+                >
+                  <span style={{ fontSize: "clamp(3rem, 6vw, 6rem)" }}>
+                    TESTIMONIALS
+                  </span>
+                </motion.h2>
 
-        {/* Contenedor de Cards - Animación Vertical + Horizontal */}
-        <motion.div style={{ y: cardsY, opacity: cardsOpacity }} className="relative z-10 w-full">
-          <motion.div
-            ref={trackRef}
-            style={{ x: horizontalX }}
-            className="flex gap-[clamp(14px,3vw,40px)] px-[clamp(18px,10vw,25vw)] py-10 w-max"
-          >
-            {testimonials.map((t, i) => (
-              <TestimonialCard key={i} {...t} />
-            ))}
-            <div className="flex-shrink-0 w-[5vw]" />
-          </motion.div>
-        </motion.div>
+                <motion.div style={{ opacity: titleOpacity, y: titleY }} className="relative">
+                  <h2
+                    className="text-primary font-bold tracking-tight uppercase text-center md:text-left"
+                    style={{ fontSize: "clamp(1.9rem, 2.8vw, 3.1rem)" }}
+                  >
+                    TESTIMONIALS
+                  </h2>
+                  <div className="w-16 h-1 bg-accent rounded-full mt-4 mx-auto md:mx-0" />
+                </motion.div>
+              </div>
 
-        {/* Indicador visual de progreso del scroll */}
-        <div className="absolute bottom-12 w-48 h-0.5 bg-dark/5 rounded-full overflow-hidden">
-          <motion.div className="h-full bg-primary" style={{ scaleX: scrollYProgress, transformOrigin: 'left' }} />
+              <div className="relative flex-1 min-h-0">
+                {testimonials.map((item, index) => (
+                  <TestimonialCard
+                    key={item.id}
+                    item={item}
+                    progress={smoothProgress}
+                    range={cardRanges[index]}
+                    index={index}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
-
-        <motion.div
-          style={{ opacity: scrollHintOpacity }}
-          className="absolute bottom-16 text-[10px] font-black tracking-[0.5em] uppercase text-dark/30"
-        >
-          Keep scrolling to see all stories
-        </motion.div>
-
-        {/* Hint mini: la sección suelta el sticky cuando la última está centrada + un scroll extra */}
-        <motion.div
-          style={{ opacity: holdAfterLastOpacity }}
-          className="absolute top-6 right-6 text-[10px] font-black tracking-[0.25em] uppercase text-dark/20"
-        >
-          Scroll to continue
-        </motion.div>
       </div>
     </section>
   );
