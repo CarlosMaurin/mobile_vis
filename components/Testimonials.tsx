@@ -33,8 +33,8 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       data-testimonial-card
       className="
         flex-shrink-0
-        w-[clamp(280px,72vw,420px)]
-        min-h-[440px]
+        w-[clamp(350px,90vw,525px)]
+        min-h-[clamp(340px,56vh,400px)]
         p-[clamp(16px,2.2vw,28px)]
         flex flex-col justify-between
         transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer
@@ -64,7 +64,14 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         </div>
 
         <div className="flex-1 flex items-start">
-          <p className="font-serif text-[clamp(13px,1.18vw,16px)] text-primary leading-[1.55] italic font-medium break-words">
+          <p
+            className="text-[clamp(12.35px,1.12vw,15.2px)] text-primary leading-[1.55] break-words"
+            style={{
+              fontFamily: 'LemonMilk, sans-serif',
+              fontStyle: 'normal',
+              fontWeight: 400,
+            }}
+          >
             "{unifiedText}"
           </p>
         </div>
