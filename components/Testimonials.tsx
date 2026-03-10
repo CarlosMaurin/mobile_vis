@@ -41,7 +41,6 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       "
     >
       <div className="flex flex-col h-full">
-        {/* Logo block with fixed dimensions to keep card measurements stable */}
         <div className="mb-5 h-[84px] flex items-center justify-start flex-shrink-0">
           <div className="h-[84px] w-[200px] flex items-center justify-start">
             {logo ? (
@@ -211,7 +210,7 @@ const Testimonials: React.FC = () => {
 
       const intro = viewportHeight * 0.9;
       const horizontal = fallbackMax * 1.35;
-      const extra = viewportHeight * 0.35;
+      const extra = viewportHeight * 0.55;
       setSectionHeightPx(viewportHeight + intro + horizontal + extra);
       return;
     }
@@ -233,7 +232,7 @@ const Testimonials: React.FC = () => {
 
     const intro = viewportHeight * 0.9;
     const horizontal = (end - start) * 1.35;
-    const extra = viewportHeight * 0.35;
+    const extra = viewportHeight * 0.55;
 
     setSectionHeightPx(viewportHeight + intro + horizontal + extra);
   }, []);
@@ -275,7 +274,7 @@ const Testimonials: React.FC = () => {
 
   const horizontalX = useTransform(
     smoothProgress,
-    [0, 0.34, 0.42, 0.92],
+    [0, 0.34, 0.42, 0.90],
     [
       `-${startScrollToCenter}px`,
       `-${startScrollToCenter}px`,
@@ -284,10 +283,10 @@ const Testimonials: React.FC = () => {
     ]
   );
 
-  const holdAfterLastOpacity = useTransform(smoothProgress, [0.9, 0.92, 1], [1, 1, 0]);
+  const holdAfterLastOpacity = useTransform(smoothProgress, [0.88, 0.90, 1], [1, 1, 0]);
   const scrollHintOpacity = useTransform(
     smoothProgress,
-    [0.28, 0.36, 0.88, 0.94],
+    [0.28, 0.36, 0.86, 0.94],
     [0, 0.4, 0.4, 0]
   );
 
