@@ -196,38 +196,6 @@ const Testimonials: React.FC = () => {
       description: 'The results have been excellent every time. A perfect match in both expertise and culture fit.',
       avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=150',
     },
-    {
-      author: 'Julia Chen',
-      role: 'Operations Director',
-      company: 'LuxSpace',
-      quote: 'Reliability is hard to come by, but V.I.S. delivers it consistently every single week.',
-      description: 'Their attention to detail and proactive approach has transformed how we manage our properties.',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Marco Rossi',
-      role: 'Asset Manager',
-      company: 'Equinox Realty',
-      quote: 'The concierge services are a game-changer for our high-end rental portfolio.',
-      description: 'Guests always leave glowing reviews about the personalized attention they receive during their stay.',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Sarah Jenkins',
-      role: 'Board President',
-      company: 'Highland HOA',
-      quote: 'V.I.S. understands the unique needs of a residential community better than anyone.',
-      description: 'From groundskeeping to general maintenance, they keep our community looking impeccable year-round.',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150',
-    },
-    {
-      author: 'Thomas Weber',
-      role: 'General Manager',
-      company: 'Alpine Retreats',
-      quote: 'A true partner in hospitality. They treat our property as if it were their own.',
-      description: 'We have seen a significant increase in guest satisfaction since we started working with their team.',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
-    },
   ];
 
   return (
