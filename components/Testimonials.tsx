@@ -25,21 +25,24 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     borderRadius: '17px',
   };
 
+  const unifiedText = description ? `${quote} ${description}` : quote;
+
   return (
     <div
       style={cardStyle}
       data-testimonial-card
       className="
         flex-shrink-0
-        w-[clamp(240px,70vw,420px)]
+        w-[clamp(280px,72vw,420px)]
+        min-h-[440px]
         p-[clamp(16px,2.2vw,28px)]
         flex flex-col justify-between
         transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer
       "
     >
-      <div>
+      <div className="flex flex-col h-full">
         {/* Logo block with fixed dimensions to keep card measurements stable */}
-        <div className="mb-6 h-[84px] flex items-center justify-start">
+        <div className="mb-5 h-[84px] flex items-center justify-start flex-shrink-0">
           <div className="h-[84px] w-[200px] flex items-center justify-start">
             {logo ? (
               <img
@@ -60,16 +63,14 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           </div>
         </div>
 
-        <p className="font-serif text-[clamp(18px,2.1vw,28px)] text-primary leading-tight mb-4 italic font-medium">
-          "{quote}"
-        </p>
-
-        <p className="text-[clamp(12px,1.15vw,14px)] text-dark/60 leading-relaxed font-medium">
-          {description}
-        </p>
+        <div className="flex-1 flex items-start">
+          <p className="font-serif text-[clamp(13px,1.18vw,16px)] text-primary leading-[1.55] italic font-medium break-words">
+            "{unifiedText}"
+          </p>
+        </div>
       </div>
 
-      <div className="mt-6 pt-5 border-t border-black/5 flex items-center justify-between">
+      <div className="mt-5 pt-5 border-t border-black/5 flex items-center justify-between flex-shrink-0">
         <span className="text-[10px] font-black uppercase text-accent tracking-tighter">
           {company}
         </span>
@@ -98,9 +99,9 @@ const Testimonials: React.FC = () => {
       role: 'Client',
       company: 'Fairly',
       quote:
-        'The most important part of growing your business is establishing a foundation of trustworthy employees.',
+        'As the Market Manager for Fairly (rental management platform), I rely on expert local property caretakers to be the boots-on-the-ground contacts for homeowners and guests.',
       description:
-        "Even if you are hiring quickly, it's vital that every new hire embodies the company culture.",
+        "I am so glad I partnered with VIS Home Services to represent our Aspen market! Florencia, Geremias are professional, responsive, reliable, and deeply knowledgeable local hosts. We're excited to continue partnering with them for our new rental homes, knowing they offer extensive services and have an outstanding local reputation - they know everyone in Aspen! VIS Home Services is an invaluable asset to any rental property in town.",
       avatar: '',
       logo: 'https://res.cloudinary.com/deit2ncmp/image/upload/v1773136153/fairly_yy3vvm.png',
       logoAlt: 'Fairly logo',
@@ -110,9 +111,9 @@ const Testimonials: React.FC = () => {
       role: 'Client',
       company: 'Elevated Escapes',
       quote:
-        'We were able to fill several of our most critical key positions with top-tier talent...',
+        'VIS consistently delivers exceptional housekeeping and maintenance services.',
       description:
-        "What impressed us most was the unique combination of speed, precision, and the team's deep market expertise.",
+        'Every property is left absolutely spotless after each clean, which has helped us consistently earn 5-star reviews from our guests. Their inspectors are incredibly meticulous, carefully identifying even the smallest maintenance issues and ensuring they are addressed immediately. Their attention to detail and commitment to excellence truly set them apart.',
       avatar: '',
       logo: 'https://res.cloudinary.com/deit2ncmp/image/upload/v1773136155/elevated_fguh1b.png',
       logoAlt: 'Elevated Escapes logo',
@@ -122,24 +123,22 @@ const Testimonials: React.FC = () => {
       role: 'Client',
       company: 'Aspen',
       quote:
-        'If recruiting were an Olympic sport, Highflyers would already have several gold medals...',
+        'Aspen Business Services highly recommends Village Integral Services (VIS) for their exceptional professionalism and technical competence.',
       description:
-        'Efficient, sharp, and always in a good mood. They somehow manage to make job talks feel like coffee with a friend.',
+        'From routine maintenance to time-sensitive repairs, their team consistently delivers dependable results across our residential and commercial portfolios. They are a reliable partner that directly contributes to operational stability and tenant satisfaction.',
       avatar: '',
       logo: 'https://res.cloudinary.com/deit2ncmp/image/upload/v1773136153/aspen_business_services_hjrtfw.png',
       logoAlt: 'Aspen Business Services logo',
     },
     {
       author: 'SelfStay',
-      role: 'CEO & Founder',
+      role: 'Client',
       company: 'SelfStay',
       quote:
-        'Outstanding hospitality services. We’ve already partnered with them multiple times.',
+        'As the Market Manager for Fairly (rental management platform), I rely on expert local property caretakers to be the boots-on-the-ground contacts for homeowners and guests.',
       description:
-        'The results have been excellent every time. A perfect match in both expertise and culture fit.',
+        "I am so glad I partnered with VIS Home Services to represent our Aspen market! Florencia, Geremias are professional, responsive, reliable, and deeply knowledgeable local hosts. We're excited to continue partnering with them for our new rental homes, knowing they offer extensive services and have an outstanding local reputation - they know everyone in Aspen! VIS Home Services is an invaluable asset to any rental property in town.",
       avatar: '',
-      // Placeholder intentionally left without logo so the fixed logo slot remains stable
-      // and you can later replace it with the final brand asset.
     },
   ];
 
